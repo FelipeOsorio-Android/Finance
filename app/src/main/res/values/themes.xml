@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.Finance" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="MySplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Finance</item>
+    </style>
+
 </resources>
