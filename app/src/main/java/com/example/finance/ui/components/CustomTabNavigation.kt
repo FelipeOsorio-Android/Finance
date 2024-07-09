@@ -1,4 +1,4 @@
-package com.example.finance.components
+package com.example.finance.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -16,6 +16,7 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,18 +26,18 @@ import com.example.finance.ui.theme.FinanceTheme
 import com.example.finance.ui.theme.LimeGreen
 import com.example.finance.ui.theme.LimeGreen30
 
-sealed class OptionsRoute(
-    val label: String,
+sealed class StyleNavRoute(
+    val route: String,
     @DrawableRes val icon: Int
 ) {
-    data object Home : OptionsRoute(
-        "Home",
+    data object Home : StyleNavRoute(
+        "HomeScreen",
         R.drawable.ic_home_filled,
     )
 
-    data object Transactions : OptionsRoute(
-        "Transactions",
-        R.drawable.ic_swap_filled,
+    data object Transactions : StyleNavRoute(
+        "TransactionScreen",
+        R.drawable.ic_swap,
     )
 }
 
@@ -45,12 +46,16 @@ sealed class OptionsRoute(
 fun CustomTabNavigation(
     modifier: Modifier = Modifier,
     selectedIndex: Int = 0,
-    options: List<OptionsRoute> = listOf(OptionsRoute.Home, OptionsRoute.Transactions),
+    styleNavRouteList: List<StyleNavRoute> = emptyList(),
     onOptionSelected: (Int) -> Unit = {}
 ) {
     TabRow(
         selectedTabIndex = selectedIndex,
         modifier
+            .shadow(
+                elevation = 10.dp,
+                shape = CircleShape,
+            )
             .clip(shape = CircleShape)
             .fillMaxWidth(0.5F),
         containerColor = Color.White,
@@ -72,7 +77,7 @@ fun CustomTabNavigation(
             )
         }
     ) {
-        options.forEachIndexed { index, optionsRoute ->
+        styleNavRouteList.forEachIndexed { index, optionsRoute ->
             Tab(
                 selected = index == selectedIndex,
                 onClick = { onOptionSelected(index) },
@@ -87,7 +92,7 @@ fun CustomTabNavigation(
                             ) {
                                 Icon(
                                     painter = painterResource(id = optionsRoute.icon),
-                                    contentDescription = optionsRoute.label,
+                                    contentDescription = optionsRoute.route,
                                     Modifier.size(30.dp),
                                     tint = LimeGreen
                                 )
@@ -97,7 +102,7 @@ fun CustomTabNavigation(
                         false -> {
                             Icon(
                                 painter = painterResource(id = optionsRoute.icon),
-                                contentDescription = optionsRoute.label,
+                                contentDescription = optionsRoute.route,
                                 Modifier.size(30.dp),
                                 tint = Color.Black
                             )
