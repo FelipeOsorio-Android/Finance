@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.finance.ui.components.CustomTabNavigation
-import com.example.finance.ui.components.StyleNavRoute
 import com.example.finance.ui.theme.FinanceTheme
 
 @Composable
@@ -17,7 +16,7 @@ fun FinanceApp(
     modifier: Modifier = Modifier,
     showBottomNavigation: Boolean = false,
     selectedIndex: Int = 0,
-    styleNavRouteList: List<StyleNavRoute> = emptyList(),
+    bottomNavRouteList: List<Any> = emptyList(),
     onOptionSelected: (Int) -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
@@ -27,11 +26,10 @@ fun FinanceApp(
             if (showBottomNavigation) {
                 CustomTabNavigation(
                     selectedIndex = selectedIndex,
-                    styleNavRouteList = styleNavRouteList,
+                    bottomNavRouteList = bottomNavRouteList,
                     onOptionSelected = onOptionSelected
                 )
             }
-
         },
         floatingActionButtonPosition = FabPosition.Center
     ) { innerPadding ->

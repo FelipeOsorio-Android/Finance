@@ -26,29 +26,25 @@ import com.example.finance.ui.theme.FinanceTheme
 import com.example.finance.ui.theme.LimeGreen
 import com.example.finance.ui.theme.LimeGreen30
 
-sealed class StyleNavRoute(
-    val route: String,
-    @DrawableRes val icon: Int
-) {
-    data object Home : StyleNavRoute(
-        "HomeScreen",
-        R.drawable.ic_home_filled,
-    )
+sealed class IconBottomNav(@DrawableRes val icon: Int) {
 
-    data object Transactions : StyleNavRoute(
-        "TransactionScreen",
-        R.drawable.ic_swap,
-    )
+    data object Home : IconBottomNav(R.drawable.ic_home)
+    data object Transaction : IconBottomNav(R.drawable.ic_swap)
+
 }
-
 
 @Composable
 fun CustomTabNavigation(
     modifier: Modifier = Modifier,
     selectedIndex: Int = 0,
-    styleNavRouteList: List<StyleNavRoute> = emptyList(),
+    bottomNavRouteList: List<Any> = emptyList(),
     onOptionSelected: (Int) -> Unit = {}
 ) {
+    val iconList = listOf(
+        IconBottomNav.Home,
+        IconBottomNav.Transaction
+    )
+
     TabRow(
         selectedTabIndex = selectedIndex,
         modifier
@@ -77,12 +73,12 @@ fun CustomTabNavigation(
             )
         }
     ) {
-        styleNavRouteList.forEachIndexed { index, optionsRoute ->
+        bottomNavRouteList.forEachIndexed { index, _ ->
             Tab(
-                selected = index == selectedIndex,
+                selected = selectedIndex == index,
                 onClick = { onOptionSelected(index) },
                 icon = {
-                    when (index == selectedIndex) {
+                    when (selectedIndex == index) {
                         true -> {
                             Box(
                                 Modifier
@@ -91,8 +87,8 @@ fun CustomTabNavigation(
                                     .padding(10.dp)
                             ) {
                                 Icon(
-                                    painter = painterResource(id = optionsRoute.icon),
-                                    contentDescription = optionsRoute.route,
+                                    painter = painterResource(id = iconList[index].icon),
+                                    contentDescription = null,
                                     Modifier.size(30.dp),
                                     tint = LimeGreen
                                 )
@@ -101,8 +97,8 @@ fun CustomTabNavigation(
 
                         false -> {
                             Icon(
-                                painter = painterResource(id = optionsRoute.icon),
-                                contentDescription = optionsRoute.route,
+                                painter = painterResource(id = iconList[index].icon),
+                                contentDescription = null,
                                 Modifier.size(30.dp),
                                 tint = Color.Black
                             )
