@@ -4,14 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import com.example.finance.ui.navigation.navhost.FinanceNavHost
+import com.example.finance.ui.navigation.navhost.Screens
 import com.example.finance.ui.theme.FinanceTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,29 +23,56 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinanceTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+                val backStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = backStackEntry?.destination?.route
+
+                val bottomNavRouteList = listOf(
+                    Screens.HomeScreenRoute.route,
+                    Screens.TransactionScreenRoute.route
+                )
+
+                val selectedIndex = remember {
+                    mutableIntStateOf(0)
+                }
+
+                val showBottomNavigation by remember(currentRoute) {
+                   derivedStateOf {
+                       currentRoute == Screens.HomeScreenRoute.route ||
+                               currentRoute == Screens.TransactionScreenRoute.route
+                   }
+                }
+
+                FinanceApp(
+                    selectedIndex = selectedIndex.intValue,
+                    currentRoute = currentRoute,
+                    bottomNavRouteList = bottomNavRouteList,
+                    showBottomNavigation = showBottomNavigation,
+                    onOptionSelected = { index ->
+                        selectedIndex.intValue = index
+
+                        navController.navigate(
+                            route = bottomNavRouteList[index],
+                            navOptions = navOptions {
+                                popUpTo(Screens.HomeScreenRoute.route) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+
+                        )
+                    },
+                    onNavigateForm = {
+                        navController.navigate(Screens.FormScreenRoute.route)
+                    },
+                    onNavigateHome = {
+                        navController.navigate(Screens.HomeScreenRoute.route)
+                    }
+                ) {
+                    FinanceNavHost(navController = navController)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FinanceTheme {
-        Greeting("Android")
     }
 }
