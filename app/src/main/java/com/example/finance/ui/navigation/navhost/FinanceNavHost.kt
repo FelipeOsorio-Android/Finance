@@ -5,41 +5,43 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
-import com.example.finance.ui.navigation.routes.CustomSplashScreenRoute
-import com.example.finance.ui.navigation.routes.HomeScreenRoute
-import com.example.finance.ui.navigation.routes.TransactionScreenRoute
 import com.example.finance.ui.navigation.routes.customSplashScreen
+import com.example.finance.ui.navigation.routes.formScreen
 import com.example.finance.ui.navigation.routes.homeScreen
 import com.example.finance.ui.navigation.routes.transactionScreen
+
+sealed class Screens(val route: String) {
+
+
+    data object CustomSplashScreenRoute : Screens(route = "SplashScreen")
+
+
+    data object HomeScreenRoute : Screens(route = "HomeScreen")
+
+
+    data object TransactionScreenRoute : Screens(route = "TransactionScreen")
+
+    data object FormScreenRoute : Screens(route = "FormScreen")
+}
 
 @Composable
 fun FinanceNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    NavHost(navController = navController, startDestination = CustomSplashScreenRoute) {
+    NavHost(navController = navController, startDestination = Screens.CustomSplashScreenRoute.route) {
         customSplashScreen(
             onFinishAnimation = {
                 navController.popBackStack()
-                navController.navigate(HomeScreenRoute)
+                navController.navigate(Screens.HomeScreenRoute.route)
             }
         )
-        homeScreen()
+        homeScreen(
+            onNavigateToForm = {
+                navController.navigate(route = Screens.FormScreenRoute.route)
+            }
+        )
         transactionScreen()
+        formScreen()
     }
-}
-
-fun NavHostController.bottomNavigation(index: Int) {
-    val route = when (index) {
-        0 -> HomeScreenRoute
-        1 -> TransactionScreenRoute
-        else -> throw IllegalArgumentException("Invalid index")
-    }
-
-    navigate(route, navOptions = navOptions {
-        popUpTo(HomeScreenRoute)
-        launchSingleTop = true
-        restoreState = true
-    })
 }
