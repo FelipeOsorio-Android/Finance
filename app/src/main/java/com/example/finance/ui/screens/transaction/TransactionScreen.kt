@@ -1,4 +1,4 @@
-package com.example.finance.ui.screens
+package com.example.finance.ui.screens.transaction
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

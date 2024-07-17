@@ -1,4 +1,4 @@
-package com.example.finance.ui.screens
+package com.example.finance.ui.screens.splash
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
