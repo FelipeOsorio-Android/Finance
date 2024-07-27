@@ -1,7 +1,10 @@
 package com.example.finance.ui.navigation.navhost
 
+import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -12,12 +15,9 @@ import com.example.finance.ui.navigation.routes.transactionScreen
 
 sealed class Screens(val route: String) {
 
-
     data object CustomSplashScreenRoute : Screens(route = "SplashScreen")
 
-
     data object HomeScreenRoute : Screens(route = "HomeScreen")
-
 
     data object TransactionScreenRoute : Screens(route = "TransactionScreen")
 
@@ -27,8 +27,10 @@ sealed class Screens(val route: String) {
 @Composable
 fun FinanceNavHost(
     modifier: Modifier = Modifier,
+    context: Context,
     navController: NavHostController = rememberNavController(),
 ) {
+
     NavHost(navController = navController, startDestination = Screens.CustomSplashScreenRoute.route) {
         customSplashScreen(
             onFinishAnimation = {
@@ -37,11 +39,9 @@ fun FinanceNavHost(
             }
         )
         homeScreen(
-            onNavigateToForm = {
-                navController.navigate(route = Screens.FormScreenRoute.route)
-            }
+            context = context,
         )
         transactionScreen()
-        formScreen()
+        formScreen(context = context)
     }
 }

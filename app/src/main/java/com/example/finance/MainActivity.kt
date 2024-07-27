@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val backStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = backStackEntry?.destination?.route
+                val context = application.applicationContext
 
                 val bottomNavRouteList = listOf(
                     Screens.HomeScreenRoute.route,
@@ -70,7 +71,7 @@ class MainActivity : ComponentActivity() {
                         navController.navigate(Screens.HomeScreenRoute.route)
                     }
                 ) {
-                    FinanceNavHost(navController = navController)
+                    FinanceNavHost(context = context, navController = navController)
                 }
             }
         }
