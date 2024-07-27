@@ -26,11 +26,11 @@ import com.example.finance.ui.theme.FinanceTheme
 fun CustomDropDownMenu(
     modifier: Modifier = Modifier,
     optionSelected: String = "",
-    expanded: Boolean = false,
-    dropDownItemList: List<String> = emptyList(),
+    dropDownExpanded: Boolean = false,
+    optionListDropDown: List<String> = emptyList(),
     onOptionSelected: (String) -> Unit = {},
     onDismissRequest: () -> Unit = {},
-    showOptions: () -> Unit = {}
+    onDropDownExpanded: () -> Unit = {}
 ) {
     Box(
         modifier
@@ -43,14 +43,14 @@ fun CustomDropDownMenu(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = optionSelected)
-            IconButton(onClick = showOptions) {
+            Text(text = optionSelected.ifEmpty { "Selecione uma opção" })
+            IconButton(onClick = onDropDownExpanded) {
                 Icon(painter = painterResource(id = R.drawable.ic_arrow_down), contentDescription = null)
             }
         }
 
-        DropdownMenu(expanded = expanded, onDismissRequest = onDismissRequest, Modifier.fillMaxWidth()) {
-            dropDownItemList.forEach { item ->
+        DropdownMenu(expanded = dropDownExpanded, onDismissRequest = onDismissRequest, Modifier.fillMaxWidth()) {
+            optionListDropDown.forEach { item ->
                 DropdownMenuItem(text = { Text(text = item) }, onClick = {onOptionSelected(item)})
             }
         }
