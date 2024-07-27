@@ -14,14 +14,18 @@ import com.example.finance.ui.theme.FinanceTheme
 fun CustomBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(),
+    showBottomSheet: Boolean = false,
     onDismissRequest: () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
-    ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
-        sheetState = sheetState
-    ) {
-        content()
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = onDismissRequest,
+            modifier,
+            sheetState = sheetState
+        ) {
+            content()
+        }
     }
 }
 
