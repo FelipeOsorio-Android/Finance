@@ -10,25 +10,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.finance.domain.repository.RepositoryUserFinance
 import com.example.finance.ui.navigation.navhost.Screens
-import com.example.finance.ui.screens.home.HomeScreen
-import com.example.finance.ui.screens.home.HomeViewModel
+import com.example.finance.ui.screens.form.FormScreen
+import com.example.finance.ui.screens.form.FormViewModel
 
-fun NavGraphBuilder.homeScreen(
-    context: Context
-) {
-    composable(route = Screens.HomeScreenRoute.route) {
-        val viewModel = viewModel<HomeViewModel>(factory = viewModelFactory {
+fun NavGraphBuilder.formScreen(context: Context) {
+    composable(route = Screens.FormScreenRoute.route) {
+        val viewModel = viewModel<FormViewModel>(factory = viewModelFactory {
             initializer {
-                HomeViewModel(
+                FormViewModel(
                     financeRepository = RepositoryUserFinance(context)
                 )
             }
         })
-
         val uiState by viewModel.uiState.collectAsState()
 
-        HomeScreen(
-            uiState = uiState,
-        )
+        FormScreen(uiState = uiState)
     }
 }
