@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.finance.ui.navigation.routes.argsName
 import com.example.finance.ui.navigation.routes.customSplashScreen
 import com.example.finance.ui.navigation.routes.formScreen
 import com.example.finance.ui.navigation.routes.homeScreen
@@ -40,6 +41,9 @@ fun FinanceNavHost(
         )
         homeScreen(
             context = context,
+            onNavigateForm = { id ->
+                navController.navigate("${Screens.FormScreenRoute.route}?$argsName=$id")
+            }
         )
         transactionScreen()
         formScreen(context = context)
