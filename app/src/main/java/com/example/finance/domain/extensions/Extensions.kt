@@ -4,15 +4,21 @@ import com.example.finance.domain.entities.EntityUserFinance
 import com.example.finance.domain.model.ModelUserFinance
 
 fun EntityUserFinance.toModelUserFinance() = ModelUserFinance(
+    id = id,
     value = value,
     description = description,
-    date = date,
+    day = day,
+    month = month,
+    year = year,
     category = category
 )
 
 fun ModelUserFinance.toEntityUserFinance() = EntityUserFinance(
+    id = id,
     value = value,
     description = description,
-    date = date,
+    day = day,
+    month = month,
+    year = year,
     category = category
 )
