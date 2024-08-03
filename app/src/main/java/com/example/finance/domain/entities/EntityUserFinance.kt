@@ -9,6 +9,8 @@ data class EntityUserFinance(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val value: Double,
     val description: String,
-    val date: String,
+    val day: Int,
+    val month: Int,
+    val year: Int,
     val category: String
 )
