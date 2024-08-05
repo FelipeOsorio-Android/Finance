@@ -1,6 +1,7 @@
 package com.example.finance.domain.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,15 +13,19 @@ import kotlinx.coroutines.flow.Flow
 interface DaoUserFinance {
 
     @Query(value = "SELECT * FROM EntityUserFinance")
-    fun getAllFinance(): Flow<List<EntityUserFinance>>
+    fun getAllUserFinance(): Flow<List<EntityUserFinance>>
 
     @Query(value = "SELECT * FROM EntityUserFinance WHERE id = :id")
-    fun getUserFinance(id: String): Flow<EntityUserFinance?>
+    fun getUserFinanceById(id: String): Flow<EntityUserFinance?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUserFinance(entityUserFinance: EntityUserFinance)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateUserFinance(entityUserFinance: EntityUserFinance)
+
+    @Delete
+    suspend fun deleteUserFinance(entityUserFinance: EntityUserFinance)
+
 
 }
