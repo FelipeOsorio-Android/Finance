@@ -7,10 +7,9 @@ import java.util.UUID
 @Entity
 data class EntityUserFinance(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    val type: String,
     val value: Double,
     val description: String,
-    val day: Int,
-    val month: Int,
-    val year: Int,
+    val date: String,
     val category: String
 )
